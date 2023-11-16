@@ -24,6 +24,14 @@ const twilioApiUrl = "https://api.twilio.com";
 
 const twilioClient = new twilio(twilioAccountSid, twilioAuthToken);
 
+// Define a route to handle Twilio status callbacks
+app.post("/twilio-callback", (req, res) => {
+  const callSid = req.body.CallSid;
+  const callStatus = req.body.CallStatus;
+  console.log(`Call SID: ${callSid}, Call Status: ${callStatus}`);
+  res.sendStatus(200);
+});
+
 // Define route to play voicemail
 app.get("/play-voicemail", (req, res) => {
   const voicemailFilePath = req.query.file;
@@ -79,7 +87,7 @@ app.post("/jotform-submission", upload.single("input_8"), async (req, res) => {
       to: `+1${areaCode}${phoneNumber}`,
       from: `+1${customerAreaCode}${customerPhoneNumber}`,
       method: "GET",
-      statusCallback: "http://example.com/callback-url",
+      statusCallback: "https://twilio-phnfrmheaven.onrender.com/twilio-callback",
       statusCallbackEvent: ["completed", "answered", "failed"],
     };
 
