@@ -72,6 +72,9 @@ app.post("/jotform-submission", upload.single("input_8"), async (req, res) => {
   // Process the voicemail file
   const voicemailUrl = req.body["input_8"]; // Get the URL from the webhook data
 
+  // Create a Date object from the extracted date and time
+  const scheduledDateTime = new Date(`${rvmDate} ${rvmTime}`);
+  
     // Create a Twilio payload and send RVM call
     const payload = {
       url: voicemailURL,
@@ -80,6 +83,7 @@ app.post("/jotform-submission", upload.single("input_8"), async (req, res) => {
       method: "GET",
       statusCallback: "https://twilio-phnfrmheaven.onrender.com/twilio-callback",
       statusCallbackEvent: ["completed", "answered", "failed"],
+      startTime: scheduledDateTime.toISOString(),
     };
 
     await sendRVM(payload, quantity1RVMCalls);
