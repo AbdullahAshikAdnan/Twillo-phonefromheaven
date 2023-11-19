@@ -106,6 +106,7 @@ async function sendRVM(payload, quantity) {
     }
   }
 }
+});  
 
 // Start the server
 app.listen(3000, () => {
