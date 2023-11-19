@@ -1,10 +1,6 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
-const axios = require("axios");
-const path = require("path");
 const fs = require("fs");
 const twilio = require("twilio"); 
 
