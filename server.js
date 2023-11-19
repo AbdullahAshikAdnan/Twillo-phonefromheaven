@@ -73,17 +73,12 @@ app.post("/jotform-submission", upload.single("input_8"), async (req, res) => {
 
   // Perform any necessary validation on the form data
 
-  // Download and process the voicemail file
+  // Process the voicemail file
   const voicemailUrl = req.body["input_8"]; // Get the URL from the webhook data
-  const voicemailFileName = `${Date.now()}_voicemail.mp3`; // Generate a unique file name
-  const voicemailFilePath = path.join("uploads", voicemailFileName);
-
-  try {
-    await downloadAndProcessVoicemail(voicemailUrl, voicemailFilePath);
 
     // Create a Twilio payload and send RVM call
     const payload = {
-      url: voicemailFilePath,
+      url: voicemailFileURL,
       to: `+1${areaCode}${phoneNumber}`,
       from: `+1${customerAreaCode}${customerPhoneNumber}`,
       method: "GET",
@@ -96,41 +91,6 @@ app.post("/jotform-submission", upload.single("input_8"), async (req, res) => {
     await sendRVM(payload, quantity10RVMCalls);
     await sendRVM(payload, quantity20RVMCalls);
     await sendRVM(payload, quantity25RVMCalls);
-
-    // Delete the voicemail file after processing
-    fs.unlinkSync(voicemailFilePath);
-
-    res.status(200).json({ message: "RVM scheduled successfully" });
-  } catch (error) {
-    console.error("Failed to schedule RVM:", error);
-
-    // Delete the voicemail file if an error occurs during processing or scheduling
-    try {
-      fs.unlinkSync(voicemailFilePath);
-    } catch (unlinkError) {
-      console.error("Failed to delete voicemail file:", unlinkError);
-    }
-
-    res.status(500).json({ error: "Failed to schedule RVM" });
-  }
-});
-
-// Function to download and process the voicemail file
-async function downloadAndProcessVoicemail(voicemailUrl, voicemailFilePath) {
-  try {
-    const response = await axios.get(voicemailUrl, { responseType: "stream" });
-    const writer = fs.createWriteStream(voicemailFilePath);
-    response.data.pipe(writer);
-
-    return new Promise((resolve, reject) => {
-      writer.on("finish", resolve);
-      writer.on("error", reject);
-    });
-  } catch (error) {
-    console.error("Failed to download voicemail file:", error);
-    throw error;
-  }
-}
 
 // Function to send an RVM call using Twilio
 async function sendRVM(payload, quantity) {
