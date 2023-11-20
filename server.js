@@ -18,9 +18,7 @@ const jotformApiUrl = "https://api.jotform.com";
 const twilioAccountSid = "ACf3aef78b0d27d078f6316a421e4e5ec6";
 const twilioAuthToken = "77dd89604123fc00efc2b4c6ff151175";
 const twilioPhoneNumber = "+18444598674";
-const twilioApiUrl = "https://api.twilio.com";
-
-const twilioClient = new twilio(twilioAccountSid, twilioAuthToken);
+const twilioClient = require("twilio")(twilioAccountSid, twilioAuthToken);
 
 // Define a route to handle Twilio status callbacks
 app.post("/twilio-callback", (req, res) => {
