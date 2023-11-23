@@ -16,7 +16,7 @@ const jotformApiUrl = "https://api.jotform.com";
 
 // Configure Twilio API credentials
 const twilioAccountSid = "ACf3aef78b0d27d078f6316a421e4e5ec6";
-const twilioAuthToken = "77dd89604123fc00efc2b4c6ff151175";
+const twilioAuthToken = "a26bda67cf0febfbc03cfea88bb164e6";
 const twilioPhoneNumber = "+18444598674";
 const twilioClient = require("twilio")(twilioAccountSid, twilioAuthToken);
 
