@@ -77,12 +77,13 @@ app.post("/jotform-submission", upload.single("input_8"), async (req, res) => {
   
     // Create a Twilio payload and send RVM call
     const payload = {
-      url: voicemailUrl,
+      machineDetection: "DetectMessageEnd",
+      from: twilioPhoneNumber,
       to: `+1${areaCode}${phoneNumber}`,
-      from: `+1${customerAreaCode}${customerPhoneNumber}`,
       method: "GET",
       statusCallback: "https://twilio-phnfrmheaven.onrender.com/twilio-callback",
       statusCallbackEvent: ["completed", "answered", "failed"],
+      mediaUrl: [voicemailUrl],
       startTime: scheduledDateTime.toISOString(),
     };
 
