@@ -41,7 +41,7 @@ app.get("/play-voicemail", (req, res) => {
 
 // Define route for the root URL
 app.get("/", (req, res) => {
-  res.send("Hello, Glitch!");
+  res.send("Welcome to the voicemail delivery service!");
 });
 
 // Define route for JotForm form submission
